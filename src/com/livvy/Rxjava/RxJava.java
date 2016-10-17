@@ -1,8 +1,6 @@
 package com.livvy.Rxjava;
 
 import rx.Observable;
-import rx.functions.Action0;
-import rx.functions.Action1;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,23 +20,12 @@ public class RxJava {
 
         List<String> StringList = Arrays.asList("one", "two", "three", "four");
 
-        Observable<String> stringObservable = Observable.from(StringList);
+        Observable<String> stringObservable = Observable.just(2, 5, 8, 9, 10).map(v -> v * 3).map(v -> (v % 2 == 0) ? "even" : "ood");
 
-        stringObservable.subscribe(new Action1<String>() {
-            @Override
-            public void call(String s) {
-                System.out.println(s);
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                System.err.println(throwable);
-            }
-        }, new Action0() {
-            @Override
-            public void call() {
-                System.out.println("we have finish yet");
-            }
-        });
+        //stringObservable.subscribe(s -> System.out.println(s));
+        Observable<Integer> flatMapObservable = Observable.just(2, 500).flatMap(v -> Observable.range(v, 3), (x, y) -> x + y);
+
+        flatMapObservable.subscribe(v -> System.out.println(v));
+
     }
 }
